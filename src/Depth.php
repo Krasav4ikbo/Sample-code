@@ -23,19 +23,35 @@ class Depth {
 
         $temp_max = 0;
 
+        $depth_value_temp = 0;
+
         for ( $i = 0; $i < $n - 1 ; $i++ ) {
             $difference = $A[$i] - $A[$i + 1];
 
             /* check current sign for difference between couple of adjacent items */
             if ( -1 === gmp_sign($difference) ) {
 
-                $max = max(min($temp_max, abs($difference)), $max);
+                if ($left >= $A[$i + 1]) {
 
-                $left = $A[$i + 1];
+                    $max = max($max, $A[$i + 1] - $depth_value_temp);
+
+                    $temp_max -= abs($difference);
+
+                } else {
+                    $max = ( $temp_max > 0 ) ? max($max, $left - $depth_value_temp) : $max;
+
+                    /*  end of left part of location
+                        and start new location search */
+                    $temp_max = 0;
+
+                    $left = $A[$i + 1];
+                }
 
             } else {
 
-                $temp_max = max($temp_max, $left - $A[$i + 1]);
+                $temp_max += $difference;
+
+                $depth_value_temp = $A[$i + 1];
 
             }
 
