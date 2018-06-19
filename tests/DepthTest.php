@@ -60,6 +60,10 @@ class DepthTest extends TestCase
                 'array' => [10,9,8,3,7,6,2,5,4,1,4,5,3,2,1],
                 'expected' => 4
             ],
+            [
+                'array' => [1, 9, 8, 7, 4, 8, 7, 10, 11, 2],
+                'expected' => 5
+            ]
         ];
     }
 

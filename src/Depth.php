@@ -1,7 +1,8 @@
 <?php
 namespace src;
 
-class Depth {
+class Depth
+{
     /**
      * solution static method
      *
@@ -21,43 +22,41 @@ class Depth {
 
         $max = 0;
 
-        $temp_max = 0;
-
         $depth_value_temp = 0;
 
-        for ( $i = 0; $i < $n - 1 ; $i++ ) {
-            $difference = $A[$i] - $A[$i + 1];
+        for ( $i = 1; $i < $n; $i++ ) {
 
-            /* check current sign for difference between couple of adjacent items */
-            if ( -1 === gmp_sign($difference) ) {
+            $depth_value = 0;
 
-                if ($left >= $A[$i + 1]) {
+            if ( $left <= $A[$i] ) {
 
-                    $max = max($max, $A[$i + 1] - $depth_value_temp);
+                if ( $depth_value_temp != 0 ) {
 
-                    $temp_max -= abs($difference);
+                    $depth_value = min($left, $A[$i]) - $depth_value_temp;
 
-                } else {
-                    $max = ( $temp_max > 0 ) ? max($max, $left - $depth_value_temp) : $max;
+                    $max = max($depth_value, $max);
 
-                    /*  end of left part of location
-                        and start new location search */
-                    $temp_max = 0;
-
-                    $left = $A[$i + 1];
                 }
+
+                $left = $A[$i];
+
+                $depth_value_temp = 0;
 
             } else {
 
-                $temp_max += $difference;
+                if ( $depth_value_temp == 0 || $depth_value_temp > $A[$i] ) {
 
-                $depth_value_temp = $A[$i + 1];
+                    $depth_value_temp = $A[$i];
 
+                } elseif ( $depth_value_temp < $A[$i] ) {
+
+                    $depth_value = $A[$i] - $depth_value_temp;
+
+                    $max = max($depth_value, $max);
+                }
             }
-
         }
 
         return $max;
     }
 }
-
